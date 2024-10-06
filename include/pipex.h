@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 09:54:17 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/10/06 17:43:15 by zpiarova         ###   ########.fr       */
+/*   Updated: 2024/10/06 20:35:10 by zuzanapiaro      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
 
 typedef struct	s_data
 {
-	int	infile;
-	int	outfile;
+	int		pipefd[2];
+	int		infile;
+	int		outfile;
 	char	*cmd1;
 	char	*cmd2;
 	char	*path1;
