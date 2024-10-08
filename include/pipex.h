@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 09:54:17 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/10/06 20:35:10 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2024/10/08 17:48:28 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-#include <stdio.h> // read
-#include <unistd.h> // access
-#include <stdlib.h> // exit
-#include <fcntl.h> // macros like R_ONLY
-#include <sys/wait.h> //wait, waitpid
-#include "../libft/libft.h" // libft
+# include <stdio.h> // read
+# include <unistd.h> // access
+# include <stdlib.h> // exit
+# include <fcntl.h> // macros like R_ONLY
+# include <sys/wait.h> //wait, waitpid
+# include "../libft/libft.h" // libft
 
-typedef struct	s_data
+typedef struct s_data
 {
 	int		pipefd[2];
 	int		infile;

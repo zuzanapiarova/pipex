@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuzanapiarova <zuzanapiarova@student.42    +#+  +:+       +#+        */
+/*   By: zpiarova <zpiarova@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:47:24 by zpiarova          #+#    #+#             */
-/*   Updated: 2024/10/06 22:48:11 by zuzanapiaro      ###   ########.fr       */
+/*   Updated: 2024/10/08 17:52:15 by zpiarova         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,22 @@ void	error(char *s)
 	exit(EXIT_FAILURE);
 }
 
-// 1. open the file and store its fd into infile variable, before using dup file must be opened
+// 1. open the file and store its fd into infile variable
+// before using dup file must be opened
 // 2. checks if the file exists and has read permissions
-// 3. replace what is at fd 0 with input files fd = set infile to stdin (we want file as input)
-// 4. set data->pipefd[1] to be stdout (we want to write output of cmd1 to pipefd[1])
-// 5. close other pipe end after using it because excve will not wun aything after itself
-void child(t_data *data, char *argv[], char *env[])
+// 3. replace what is at fd 0 with input files fd = set infile to stdin
+// --> we want this file as input
+// 4. set data->pipefd[1] to be stdout
+// --> we want to write output of cmd1 to pipefd[1]
+// 5. close other pipe end after using it
+// because excve will not run anything after itself
+// 0777 gives rwx permissions to all
+void	child(t_data *data, char *argv[], char *env[])
 {
 	int		i;
 
 	close(data->pipefd[0]);
-	data->infile = open(argv[1], O_RDONLY, 0777); // 0777 gives rwx permissions to all
+	data->infile = open(argv[1], O_RDONLY, 0777);
 	if (data->infile == -1)
 		error("Could not open infile.");
 	dup2(data->infile, STDIN_FILENO);
@@ -53,12 +58,13 @@ void child(t_data *data, char *argv[], char *env[])
 		error("Error when executing the command.");
 }
 
-// 1. open the file and store its fd into infile variable, file before dup must be opened
+// 1. open the file and store its fd into infile variable
 // 2. checks if the file exists and has write permissions
-// 3. set data->[0] to stdin(0) = pipefd[0] reads from pipefd[1] the output of cmd1
+// 3. set pipefd[0] to stdin(0) = pipefd[0] reads from pipefd[1] output of cmd1
 // 4. set outfile to be  stdout(1) = we want to write to it the output of cmd2
-// 5. close other pipe end after using it before exec because it will not run anything after it
-void parent(t_data *data, char *argv[], char *env[])
+// 5. close other pipe end after using it before exec
+// because exec will not run anything after it
+void	parent(t_data *data, char *argv[], char *env[])
 {
 	int		i;
 
@@ -68,8 +74,8 @@ void parent(t_data *data, char *argv[], char *env[])
 		error("Could not open or write to outfile.");
 	dup2(data->pipefd[0], STDIN_FILENO);
 	dup2(data->outfile, STDOUT_FILENO);
-	close(data->pipefd[0]); // why does this work if we write to pipe after closing it?
-	data->args2 = ft_split(argv[3], ' '); // this is array, do not forget to free
+	close(data->pipefd[0]); // why does it work if we write to pipe after closing it?
+	data->args2 = ft_split(argv[3], ' '); // array, do not forget to free
 	data->cmd2 = data->args2[0];
 	data->path2 = find_path(data->cmd2, env);
 	if (!data->path2)
